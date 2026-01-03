@@ -1,5 +1,6 @@
 from tkinter import Tk, Frame
 from queue import Empty, Queue
+from typing import Dict, Any
 from tkmacosx import Button
 
 from .layout import LAYOUT
@@ -8,13 +9,13 @@ KEY_WIDTH = 40
 KEY_HEIGHT = 40
 
 class Keyboard:
-    def __init__(self, master):
+    def __init__(self, master: Tk) -> None:
         self.master = master
         self.master.title("Keyboard Emulator")
-        self.keys = {}
+        self.keys: Dict[str, Button] = {}
         self.create_keyboard()
 
-    def create_keyboard(self):
+    def create_keyboard(self) -> None:
         keyboard_frame = Frame(self.master, bd=2, relief='sunken')
         keyboard_frame.pack(padx=10, pady=10)
 
@@ -26,23 +27,22 @@ class Keyboard:
                 self.keys[unique_name] = key
                 col += int(key_span)
 
-
-    def set_key_color(self, key_name, color):
+    def set_key_color(self, key_name: str, color: str) -> None:
         if key_name in self.keys:
             self.keys[key_name].config(bg=color)
 
-    def set_all_keys_color(self, color):
+    def set_all_keys_color(self, color: str) -> None:
         for key in self.keys.values():
             key.config(bg=color)
 
-def run_emulator(queue):
+def run_emulator(queue: Queue) -> None:
     root = Tk()
     keyboard = Keyboard(root)
 
-    def check_queue():
+    def check_queue() -> None:
         while True:
             try:
-                message = queue.get_nowait()
+                message: Dict[str, Any] = queue.get_nowait()
                 if message['command'] == 'set_all_keys_color':
                     keyboard.set_all_keys_color(message['color'])
                 elif message['command'] == 'set_key_color':
