@@ -1,7 +1,6 @@
 import click
 from .controller import Controller
 from .devices import OpenRGBDevice, EmulatorDevice
-import time
 
 @click.group()
 def cli():
@@ -15,15 +14,15 @@ def set_color(color, emulator):
     """Sets the entire keyboard to a single color."""
     if emulator:
         device = EmulatorDevice()
+        controller = Controller(device)
+        controller.set_color(color)
+        click.echo(f"Setting keyboard color to {color}")
+        device.process.join()
     else:
         device = OpenRGBDevice()
-
-    controller = Controller(device)
-    controller.set_color(color)
-    click.echo(f"Setting keyboard color to {color}")
-    # Give the emulator time to start and process the command
-    if emulator:
-        time.sleep(2)
+        controller = Controller(device)
+        controller.set_color(color)
+        click.echo(f"Setting keyboard color to {color}")
 
 if __name__ == '__main__':
     cli()
