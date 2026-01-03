@@ -44,5 +44,20 @@ def set_key(key, color, emulator):
     if emulator:
         device.process.join()
 
+@cli.command()
+@click.argument('art_file', type=click.File('r'))
+@click.option('--fg', default='red', help='Foreground color.')
+@click.option('--bg', default='black', help='Background color.')
+@click.option('--emulator', is_flag=True, help='Use the emulator.')
+def ascii_art(art_file, fg, bg, emulator):
+    """Displays ASCII art on the keyboard from a file."""
+    art = art_file.read()
+    device = EmulatorDevice() if emulator else OpenRGBDevice()
+    controller = Controller(device)
+    controller.set_ascii_art(art, fg, bg)
+    click.echo(f"Displaying ASCII art from {art_file.name}")
+    if emulator:
+        device.process.join()
+
 if __name__ == '__main__':
     cli()
