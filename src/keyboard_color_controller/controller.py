@@ -1,2 +1,6 @@
-# This file will contain the logic to control the keyboard via OpenRGB
-pass
+class Controller:
+    def __init__(self, device):
+        self.device = device
+
+    def set_color(self, color):
+        self.device.set_color(color)
