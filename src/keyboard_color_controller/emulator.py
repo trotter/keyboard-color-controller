@@ -1,8 +1,9 @@
-import tkinter as tk
+from tkinter import Tk, Frame
 from queue import Empty, Queue
+from tkmacosx import Button
 
-KEY_WIDTH = 4
-KEY_HEIGHT = 2
+KEY_WIDTH = 40
+KEY_HEIGHT = 40
 
 class Keyboard:
     def __init__(self, master):
@@ -22,13 +23,13 @@ class Keyboard:
             [('Ctrl', 1.5), ('Win', 1.5), ('Alt', 1.5), ('Space', 6), ('Alt', 1.5), ('Fn', 1.5), ('Ctrl', 1.5)]
         ]
 
-        keyboard_frame = tk.Frame(self.master, bd=2, relief=tk.SUNKEN)
+        keyboard_frame = Frame(self.master, bd=2, relief='sunken')
         keyboard_frame.pack(padx=10, pady=10)
 
         for r, row_keys in enumerate(layout):
             col = 0
             for key_text, key_span in row_keys:
-                key = tk.Button(keyboard_frame, text=key_text, width=int(KEY_WIDTH * key_span), height=KEY_HEIGHT)
+                key = Button(keyboard_frame, text=key_text, width=int(KEY_WIDTH * key_span), height=KEY_HEIGHT)
                 key.grid(row=r, column=col, columnspan=int(key_span) if key_span > 1 else 1, padx=1, pady=1)
                 self.keys[key_text] = key
                 col += int(key_span)
@@ -43,7 +44,7 @@ class Keyboard:
             key.config(bg=color)
 
 def run_emulator(queue):
-    root = tk.Tk()
+    root = Tk()
     keyboard = Keyboard(root)
 
     def check_queue():
