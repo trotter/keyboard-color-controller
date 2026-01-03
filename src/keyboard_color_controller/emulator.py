@@ -40,15 +40,16 @@ def run_emulator(queue):
     keyboard = Keyboard(root)
 
     def check_queue():
-        try:
-            message = queue.get_nowait()
-            if message['command'] == 'set_all_keys_color':
-                keyboard.set_all_keys_color(message['color'])
-            elif message['command'] == 'set_key_color':
-                keyboard.set_key_color(message['key'], message['color'])
-        except Empty:
-            pass
-        root.after(100, check_queue)
+        while True:
+            try:
+                message = queue.get_nowait()
+                if message['command'] == 'set_all_keys_color':
+                    keyboard.set_all_keys_color(message['color'])
+                elif message['command'] == 'set_key_color':
+                    keyboard.set_key_color(message['key'], message['color'])
+            except Empty:
+                break
+        root.after(10, check_queue)
 
     root.after(100, check_queue)
     root.mainloop()
