@@ -14,6 +14,7 @@ COLOR_MAP = {
     'yellow': (255, 255, 0),
     'cyan': (0, 255, 255),
     'magenta': (255, 0, 255),
+    'pink': (255, 155, 155)
 }
 
 def hex_to_rgb(hex_color: str) -> Optional[Tuple[int, int, int]]:
